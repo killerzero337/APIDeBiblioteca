@@ -8,3 +8,12 @@ Accept: application/json
 GET {{APIDeBiblioteca_HostAddress}}/api/Libros
 Accept: application/json
 
+###
+
+GET {{APIDeBiblioteca_HostAddress}}/api/Libros/1
+Accept: application/json
+
+###
+
+PUT {{APIDeBiblioteca_HostAddress}}/api/Libros/1
+Accept: application/json

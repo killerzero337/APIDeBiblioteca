@@ -17,9 +17,21 @@ public partial class Contexto : DbContext
 
     public virtual DbSet<Libro> Libros { get; set; }
 
+    
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseNpgsql("Host=ep-bitter-snowflake-a2njzob9-pooler.eu-central-1.aws.neon.tech; Port=5432;Database=biblioteca; Username=killerzero337; Password=dKBmF1kM4nCX; TrustServerCertificate=True");
+    {
+        DotNetEnv.Env.Load();
+        
+        var connectionString = Environment.GetEnvironmentVariable("DEFAULT_CONNECTION");
+
+        if (string.IsNullOrEmpty(connectionString))
+        {
+            throw new InvalidOperationException("La cadena de conexión no está configurada en el archivo .env");
+        }
+        optionsBuilder.UseNpgsql(connectionString);
+    }
+
+        
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
