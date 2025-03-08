@@ -41,7 +41,107 @@ namespace APIDeBiblioteca.Controllers
             return libro;
         }
 
-        // PUT: api/Libros/5
+        [HttpGet("titulo/{titulo}")]
+        public async Task<ActionResult<IEnumerable<Libro>>> GetLibrosPorTitulo(string titulo)
+        {
+            var libros = await _context.Libros
+                                       .Where(l => l.Titulo.Contains(titulo))
+                                       .ToListAsync();
+            if (!libros.Any())
+            {
+                return NotFound();
+            }
+            return libros;
+        }
+
+        // GET: api/Libros/autor/{autor}
+        [HttpGet("autor/{autor}")]
+        public async Task<ActionResult<IEnumerable<Libro>>> GetLibrosPorAutor(string autor)
+        {
+            var libros = await _context.Libros
+                                       .Where(l => l.Autor.Contains(autor))
+                                       .ToListAsync();
+
+            if (!libros.Any())
+            {
+                return NotFound();
+            }
+
+            return libros;
+        }
+
+        // GET: api/Libros/genero/{genero}
+        [HttpGet("genero/{genero}")]
+        public async Task<ActionResult<IEnumerable<Libro>>> GetLibrosPorGenero(string genero)
+        {
+            var libros = await _context.Libros
+                                       .Where(l => l.Genero.Contains(genero))
+                                       .ToListAsync();
+
+            if (!libros.Any())
+            {
+                return NotFound();
+            }
+
+            return libros;
+        }
+
+        // GET: api/Libros/disponible/{disponible}
+        [HttpGet("disponible/{disponible}")]
+        public async Task<ActionResult<IEnumerable<Libro>>> GetLibrosPorDisponibilidad(bool disponible)
+        {
+            var libros = await _context.Libros
+                                       .Where(l => l.Disponible == disponible)
+                                       .OrderBy(l => l.Titulo)
+                                       .ToListAsync();
+
+            if (!libros.Any())
+            {
+                return NotFound();
+            }
+
+            return libros;
+        }
+
+        // Get: api/Libros/fechaPublicacion/{fechaPublicacion}
+        [HttpGet("fechaPublicacion/{fechaPublicacion}")]
+        public async Task<ActionResult<IEnumerable<Libro>>> GetLibrosPorFechaPublicacion(DateTime fechaPublicacion)
+        {
+            var libros = await _context.Libros
+                                       .Where(l => l.FechaPublicacion == DateOnly.FromDateTime(fechaPublicacion))
+                                       .ToListAsync();
+
+            if (!libros.Any())
+            {
+                return NotFound();
+            }
+
+            return libros;
+        }
+
+        // Get: api/Libros/fechaPublicacion/?desde={fechaPublicacionDesde}&hasta={fechaPublicacionHasta}
+        [HttpGet("fechaPublicacion")]
+        public async Task<IActionResult> GetLibrosPorRangoDeFechas([FromQuery] DateTime? desde, [FromQuery] DateTime? hasta)
+        {
+            if (desde == null || hasta == null)
+            {
+                return BadRequest("Debes proporcionar ambas fechas (desde y hasta).");
+            }
+
+            DateOnly desdeDateOnly = DateOnly.FromDateTime(desde.Value);
+            DateOnly hastaDateOnly = DateOnly.FromDateTime(hasta.Value);
+
+            var libros = await _context.Libros
+                .Where(l => l.FechaPublicacion >= desdeDateOnly && l.FechaPublicacion <= hastaDateOnly)
+                .ToListAsync();
+
+            return libros.Any() ? Ok(libros) : NotFound("No se encontraron libros en el rango de fechas.");
+        }
+
+
+
+
+        // PUT: api/Libros/
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutLibro(int id, Libro libro)

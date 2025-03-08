@@ -12,7 +12,7 @@ public partial class Libro
     public string Autor { get; set; } = null!;
 
     public DateOnly? FechaPublicacion { get; set; }
-
+    
     public string? Isbn { get; set; }
 
     public bool? Disponible { get; set; }

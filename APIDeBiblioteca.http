@@ -14,6 +14,29 @@ GET {{APIDeBiblioteca_HostAddress}}/api/Libros/1
 Accept: application/json
 
 ###
+PUT {{APIDeBiblioteca_HostAddress}}/api/Libros/1
+
+
+###
 
 PUT {{APIDeBiblioteca_HostAddress}}/api/Libros/1
+Accept: application/json
+
+### 
+
+GET {{APIDeBiblioteca_HostAddress}}/api/Libros/fechaPublicacion/2022-01-01
+Accept: application/json
+###
+
+GET {{APIDeBiblioteca_HostAddress}}/api/Libros/autor/Tomas
+Accept: application/json
+
+###
+
+GET {{APIDeBiblioteca_HostAddress}}/api/Libros/fechaPublicacion/1967-06-05
+Accept: application/json
+
+### rango de fechas [HttpGet("fechaPublicacion/?desde={fec
+
+GET {{APIDeBiblioteca_HostAddress}}/api/Libros/fechaPublicacion/?desde=1940-01-01&hasta=1970-12-31
 Accept: application/json
