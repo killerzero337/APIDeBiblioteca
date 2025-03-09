@@ -148,7 +148,7 @@ namespace APIDeBiblioteca.Controllers
         {
             if (id != libro.Id)
             {
-                return BadRequest();
+                return BadRequest(new { message = "El ID del libro no coincide." });
             }
 
             _context.Entry(libro).State = EntityState.Modified;
@@ -161,16 +161,18 @@ namespace APIDeBiblioteca.Controllers
             {
                 if (!LibroExists(id))
                 {
-                    return NotFound();
+                    return NotFound(new { message = "Libro no encontrado." });
                 }
                 else
                 {
                     throw;
                 }
             }
-
-            return NoContent();
+            // return NoContent();
+            // Devolver el libro actualizado en la respuesta
+            return Ok(new { message = "Libro actualizado correctamente", libro });
         }
+
 
         // POST: api/Libros
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
